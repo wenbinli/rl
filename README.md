@@ -11,14 +11,12 @@ Python 2.X + {pygame,matplotlib} tested on Ubuntu 14.04
 1. gridworld.py: a GUI example (random policy) and DP demo
 ![alt text](https://github.com/wenbinli/rl/raw/master/screenshot/gridworld.png "gridworld")
 2. blackjack_GUITest.py: a demo for plotting the animation plot of the learned value function.
-![alt text](https://github.com/wenbinli/rl/raw/master/screenshot/blackjack_gui.png "gridworld")
-2. blackjack_sol.py: a demo for the blackjack example, MC with Exploring Start and animation plot of the learned policy function. Somehow, 
-the policy does not match the book's description, to be fixed.
-![alt text](https://github.com/wenbinli/rl/raw/master/screenshot/blackjack.png "gridworld")
+![alt text](https://github.com/wenbinli/rl/raw/master/screenshot/blackjack_gui.png "blackjack")
+2. blackjack_sol.py: a demo for the blackjack example, MC with Exploring Start and animation plot of the learned policy function. Somehow,the policy does not match the book's description, to be fixed.
 3. gridworld_windy.py: a GUI demo for the gridworld with crosswind, Sarsa
-![alt text](https://github.com/wenbinli/rl/raw/master/screenshot/gridworld_windy.png "gridworld")
+![alt text](https://github.com/wenbinli/rl/raw/master/screenshot/gridworld_windy.png "gridworld_windy")
 4. cliffWalk_QL/SARSA.py: GUI demos for gridworld with cliff, Q-Learning and Sarsa
-![alt text](https://github.com/wenbinli/rl/raw/master/screenshot/cliffwalking.png "gridworld")
+![alt text](https://github.com/wenbinli/rl/raw/master/screenshot/cliffwalking.png "gridworld_cliff")
 
 ## Note
 Jeremy Stober provides more general codes on RL & robotics https://github.com/stober
