@@ -1,5 +1,5 @@
 # rl
-some of my python scripts fro reinforcement learning
+some of my python scripts for reinforcement learning
 
 ## Overview
 So far most scripts are for the examples from Barto and Sutton's book (2nd edition) http://webdocs.cs.ualberta.ca/~sutton/book/the-book.html
