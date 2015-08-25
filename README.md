@@ -16,7 +16,7 @@ Python 2.X + {pygame,matplotlib} tested on Ubuntu 14.04
 3. gridworld_windy.py: a GUI demo for the gridworld with crosswind, Sarsa
 ![alt text](https://github.com/wenbinli/rl/raw/master/screenshot/gridworld_windy.png "gridworld_windy")
 4. cliffWalk_QL/SARSA.py: GUI demos for gridworld with cliff, Q-Learning and Sarsa
-![alt text](https://github.com/wenbinli/rl/raw/master/screenshot/cliffwalking.png "gridworld_cliff")
+![alt text](https://github.com/wenbinli/rl/raw/master/screenshot/cliff_walking.png "gridworld_cliff")
 
 ## Note
 Jeremy Stober provides more general codes on RL & robotics https://github.com/stober
