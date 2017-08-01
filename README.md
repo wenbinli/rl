@@ -1,11 +1,11 @@
-# rl
-some of my python scripts for reinforcement learning
+# RL
+Some of my python scripts for reinforcement learning, hoping to provide some insight on the related algorithms
 
 ## Overview
-So far most scripts are for the examples from Barto and Sutton's book (2nd edition) http://webdocs.cs.ualberta.ca/~sutton/book/the-book.html
+Most scripts are based on the examples from Barto and Sutton's book (2nd edition) http://webdocs.cs.ualberta.ca/~sutton/book/the-book.html
 
 ## Dependency
-Python 2.X + {pygame,matplotlib} tested on Ubuntu 14.04
+Python 2.X + {pygame,matplotlib} tested on Ubuntu 14.04/16.04
 
 ## List (so far)
 1. gridworld.py: a GUI example (random policy) and DP demo                               
