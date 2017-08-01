@@ -7,7 +7,11 @@ Most scripts are based on the examples from Barto and Sutton's book (2nd edition
 ## Dependency
 Python 2.X + {pygame,matplotlib} tested on Ubuntu 14.04/16.04
 
-## List (so far)
+## Outline (so far)
+1. Dynamic Programming (DP)
+2. Monte Carlo
+3. Temporal Difference (TD)
+
 1. gridworld.py: a GUI example (random policy) and DP demo                               
 ![alt text](https://github.com/wenbinli/rl/raw/master/screenshot/gridworld.png)
 2. blackjack_GUITest.py: a demo for plotting the animation plot of the learned value function.
