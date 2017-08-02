@@ -7,7 +7,6 @@ main reference: https://github.com/stober/gridworld/blob/master/src/gridworldgui
 """
 
 import pygame
-#import pygame.locals as pgl # pygame constant
 from pygame.locals import *
 
 import numpy as np
