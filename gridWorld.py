@@ -1,9 +1,12 @@
+import numpy as np
+
 class GridWorld(object):
     def __init__(self, grid_h, grid_l, start_loc, goal_loc):
         self.grid_h = grid_h
         self.grid_w = grid_w
         self.start_loc = start_loc
         self.goal_loc = goal_loc
+        self.v_est = np.zeros((grid_h, grid_l))
 
     def step(cur_r, cur_c, action):
         if action == 0: # left
@@ -26,4 +29,10 @@ class GridWorld(object):
         if nxt_r < 0 or nxt_r > self.grid_h - 1:
             nxt_r = cur_r
 
-        return nxt_r, nxt_c
+        # reward and terminal signal
+        if (nxt_r, nxt_c) == self.goal_loc:
+            reward = 0
+        else:
+            reward = -1
+
+        return nxt_r, nxt_c, reward
