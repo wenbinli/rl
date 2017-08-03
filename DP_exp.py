@@ -17,6 +17,7 @@ env = GridWorld(grid_h,grid_w,goal_loc,theta, num_action, discount)
 
 while True:
 
-	done = env.v_eval()
+	# done = env.v_eval()
+	done = env.value_itr()
 	if done == True:
 		break

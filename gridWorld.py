@@ -9,7 +9,10 @@ class GridWorld(object):
         self.num_action = num_action
         self.discount = discount
 
-        self.v_est = np.zeros((grid_h, grid_w))
+        # self.v_est = np.zeros((grid_h, grid_w))
+        self.v_est = np.random.random((grid_h, grid_w))
+        for goal_ in goal_loc:
+            self.v_est[goal_] = 0
 
     def step(self, cur_r, cur_c, action):
         if action == 0: # left
@@ -60,5 +63,38 @@ class GridWorld(object):
                         print self.v_est
                         return done
         print self.v_est
-        
+
+        return done
+
+
+    def value_itr(self):
+        done = False
+        delta = 0
+
+        for i in range(self.grid_h):
+            for j in range(self.grid_w):
+
+                if (i,j) not in self.goal_loc:
+
+                    v = self.v_est[i,j]
+
+                    V = []
+                    for k in range(self.num_action):
+
+                        nxt_r, nxt_c = self.step(i,j,k)
+                        V.append(self.discount * self.v_est[nxt_r, nxt_c] - 1)
+
+                    print V
+                    V = max(V)
+                    print V
+                    self.v_est[i,j] = V
+                    delta = max(delta, abs(v - V))
+                    print 'current delta: ' + str(delta)
+                    
+                    if delta < self.theta:
+                        done = True
+                        print self.v_est
+                        return done
+        print self.v_est
+
         return done
