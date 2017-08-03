@@ -1,12 +1,22 @@
 # DP experiment with gridworld
 
-from gridworld import GridWorld
+from gridWorld import GridWorld
 
-start_loc = (0,0)
-goal_loc = (9,9)
-grid_h = 10
-grid_l = 10
+grid_h = 4
+grid_w = 4
 
-env = GridWorld(10,10,start_loc,goal_loc)
+goal_loc = [(0,0),(grid_h-1, grid_w-1)]
+theta = 0.01 # threshold of iteration stopping criteria
+num_action = 4
+discount = 1. # undiscount
+
+env = GridWorld(grid_h,grid_w,goal_loc,theta, num_action, discount)
 
 # policy evaluation for random policy
+# loop over all states/in-place update
+
+while True:
+
+	done = env.v_eval()
+	if done == True:
+		break
