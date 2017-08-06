@@ -24,15 +24,18 @@ num_episodes = 10
 episode_count = 0
 step_count_history = []
 xt_history = []
+vt_history = []
 
 while episode_count < num_episodes:
 	print "---------- Episode " + str(episode_count) + "----------"
 	xt_record = []
+	vt_record = []
 	terminal = 0
 	step_count = 0
 	xt = -0.2 * np.random.random() - 0.6
 	vt = 0
 	xt_record.append(xt)
+	vt_record.append(vt)
 	while terminal == 0:
 		# print "step " + str(step_count)
 		# random policy
@@ -42,13 +45,15 @@ while episode_count < num_episodes:
 		if terminal == 0:
 			r = -1
 		xt_record.append(xt)
+		vt_record.append(vt)
 		step_count += 1
 	xt_history.append(xt_record)
+	vt_history.append(vt_record)
 	step_count_history.append(step_count)
 	episode_count += 1
 
 # plot results
-f, (ax1,ax2) = plt.subplots(1,2)
+f, (ax1,ax2,ax3) = plt.subplots(1,3)
 
 ax1.plot(np.log10(step_count_history))
 plt.sca(ax1) # set current axes instance
@@ -60,8 +65,14 @@ ax2.plot(xt_history[0])
 plt.sca(ax2)
 plt.xlabel('Step')
 plt.ylabel('x_t')
-plt.title('Path')
+plt.title('Location')
+
+ax3.plot(vt_history[0])
+plt.sca(ax3)
+plt.xlabel('Step')
+plt.ylabel('v_t')
+plt.title('Speed')
 
 fig = plt.gcf()
-fig.set_size_inches(10,3)
+fig.set_size_inches(17,3)
 plt.savefig('MountainCar_random.png', bbox_inches='tight', dpi=300)
