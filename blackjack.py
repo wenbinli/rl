@@ -2,15 +2,35 @@
 # version: each player competes independently against the dealer
 import numpy as np
 
-# deal a card
-def deal():
-	card = np.random.randint(1,14)
-	return card
-
 # a game episode
 def game():
-	def evalute_result(player_cards, dealer_cards):
+
+	def init():
+		# deal two cards to both player and the dealer
+		dealer_cards.append(deal())
+		dealer_cards.append(deal())
+		player_cards.append(deal())
+		player_cards.append(deal())
+
+		return dealer_cards, player_cards
+
+	def deal():
+		# deal a card
+		card = np.random.randint(1,14)
+		return card
+
+	def win_or_loss(dealer_cards, player_cards):
 		# decide current result
+
+		# convert cards to sum
+		dealer_cards_sum = 0
+		for card in dealer_cards:
+			if card > 10:
+				dealer_cards_sum += 10
+			else:
+				dealer_cards_sum += card
+
+
 		if sum(dealer_cards) == 21:
 			r = -1
 			terminal = True
@@ -34,17 +54,13 @@ def game():
 
 		return r, terminal, info
 
-	dealer_cards = []
-	player_cards = []
 	r = 0
 	terminal = False
 	info = ""
 
-	# first 2 cards
-	dealer_cards.append(deal())
-	dealer_cards.append(deal())
-	player_cards.append(deal())
-	player_cards.append(deal())
+	dealer_cards, player_cards = init()
+
+	if sum(player_cards) == 12:
 
 	r, terminal, info = evalute_result(player_cards, dealer_cards)
 
@@ -110,6 +126,13 @@ def policyP(player_cards):
 	else:
 		decision = 1 # hit
 	return decision
+
+def game():
+	# new definition of a game
+	# first two cards to both player and dealer
+	# decide if game stops here
+	# if game stops, who wins
+	# if game does not stop, continue
 
 # simulation
 N = 10
