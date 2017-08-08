@@ -40,7 +40,16 @@ def game():
 	#	if player does not get natural and dealer gets natural
 	#		player loses
 	#		game over
+
+	# usable ace
+	if 1 in player_cards and sum(player_cards) + 10 <= 21:
+		i = 0
+		while player_cards[i] != 1: # first ace in the player's cards
+			i += 1
+		player_cards[i] = 11
+
 	if 1 in player_cards and sum(player_cards) == 11:
+
 		if 1 in dealer_cards and sum(dealer_cards) == 11:
 			r = 0
 			info = "Both player and dealer get natural, ties!"
@@ -70,13 +79,6 @@ def game():
 	# player's policy
 	# if cards count to 20 or 21 
 	#	player sticks
-
-	# usable ace
-	if 1 in player_cards and sum(player_cards) + 10 <= 21:
-		i = 0
-		while player_cards[i] != 1: # first ace in the player's cards
-			i += 1
-		player_cards[i] = 11
 
 	player_stick = False
 	while not player_stick:
@@ -155,50 +157,50 @@ def game():
 
 	return r, info, player_cards, dealer_cards, usable_ace
 
-def v_update(r, player_cards, dealer_cards, v):
+def v_update(r, player_cards, dealer_cards, v, c):
 	dealer_show = dealer_cards[1]
 	num_player_cards = len(player_cards)
+
 	for i in range(1,num_player_cards):
 		player_sum = sum(player_cards[:i+1])
 		if player_sum >= 12 and player_sum <= 21:
-			# import ipdb;ipdb.set_trace()
 			# print dealer_show
 			# print player_sum
 			v[dealer_show-1,player_sum-12] += r
+			c[dealer_show-1,player_sum-12] += 1
 	return v
 
 # init state-value estimate
 V_Usable = np.zeros((10,10)) # dealer_show X player_sum
+V_Usable_c = np.zeros((10,10)) # count for states
 V_noUsable = np.zeros((10,10))
+V_noUsable_c = np.zeros((10,10)) # count for states
 # MC simulation
-N = 10000
-N_Usable = 0
-N_noUsable = 0
+N = 500000
 
 for i in range(N):
 	print "========== Game " + str(i) + " =========="
 	r, info, player_cards, dealer_cards, usable_ace = game()
 	if usable_ace == True:
-		V_Usable = v_update(r, player_cards, dealer_cards, V_Usable)
-		N_Usable += 1
+		V_Usable = v_update(r, player_cards, dealer_cards, V_Usable, V_Usable_c)
 	else:
-		V_noUsable = v_update(r, player_cards, dealer_cards, V_noUsable)
-		N_noUsable += 1
+		V_noUsable = v_update(r, player_cards, dealer_cards, V_noUsable, V_noUsable_c)
+
 	print player_cards
 	print dealer_cards
 	print info
 
-V_Usable = 1. * V_Usable/N_Usable
-V_noUsable = 1. * V_noUsable/N_noUsable
+V_Usable = V_Usable/(V_Usable_c + np.finfo(float).eps)
+V_noUsable = V_noUsable/(V_noUsable_c + np.finfo(float).eps)
 
-x = np.linspace(1,10,10)
-y = np.linspace(12,21,10)
+x = np.linspace(1,10,10).astype('int')
+y = np.linspace(12,21,10).astype('int')
 X,Y = np.meshgrid(x,y)
 
 # plot results
 fig = plt.figure()
 ax = fig.add_subplot(2,1,1, projection='3d')
-ax.plot_wireframe(X, Y, V_Usable, rstride=1, cstride=1)
+ax.plot_wireframe(X, Y, V_Usable[X-1,Y-12], rstride=1, cstride=1)
 ax.set_zlim(-1,1)
 ax.set_zticks([-1,1])
 ax.tick_params(axis='x',labelsize=7)
@@ -206,7 +208,7 @@ ax.tick_params(axis='y',labelsize=7)
 ax.set_title('Usable ace')
 
 ax = fig.add_subplot(2,1,2, projection='3d')
-ax.plot_wireframe(X, Y, V_noUsable, rstride=1, cstride=1)
+ax.plot_wireframe(X, Y, V_noUsable[X-1,Y-12], rstride=1, cstride=1)
 ax.set_zlim(-1,1)
 ax.set_zticks([-1,1])
 ax.tick_params(axis='x',labelsize=7)
@@ -217,7 +219,10 @@ ax.set_ylabel('Player sum')
 
 
 fig = plt.gcf()
-fig.set_size_inches(4,8)
+fig.set_size_inches(5,5)
 plt.tight_layout()
 out_path = 'MCES_blackjack_itr_' + str(N) + '.png' 
 plt.savefig(out_path,dpi=180)
+
+# print V_noUsable
+# print V_Usable
