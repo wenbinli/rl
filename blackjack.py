@@ -136,7 +136,7 @@ def game():
 	#			game over
 	#		else
 	# 			continue to 3) player's turn
-	# 3) player's turn
+	# 3) player's turn ~ player's policy
 	#		if player sticks
 	#			then go to dealer's turn
 	#		if player hits
@@ -145,7 +145,7 @@ def game():
 	#				game over
 	#			else
 	#				continue to 3)
-	# 4) dealer's turn
+	# 4) dealer's turn ~ dealer's policy
 	#		if dealer sticks
 	#			decide winner
 	#			game over
