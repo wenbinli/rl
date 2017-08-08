@@ -1,131 +1,8 @@
 # blackjace experiment
 # version: each player competes independently against the dealer
 import numpy as np
-
-# a game episode
-# def game():
-
-# 	def init():
-# 		# deal two cards to both player and the dealer
-# 		dealer_cards.append(deal())
-# 		dealer_cards.append(deal())
-# 		player_cards.append(deal())
-# 		player_cards.append(deal())
-
-# 		return dealer_cards, player_cards
-
-# 	def deal():
-# 		# deal a card
-# 		card = np.random.randint(1,14)
-# 		return card
-
-# 	def win_or_loss(dealer_cards, player_cards):
-# 		# decide current result
-
-# 		# convert cards to sum
-# 		dealer_cards_sum = 0
-# 		for card in dealer_cards:
-# 			if card > 10:
-# 				dealer_cards_sum += 10
-# 			else:
-# 				dealer_cards_sum += card
-
-
-# 		if sum(dealer_cards) == 21:
-# 			r = -1
-# 			terminal = True
-# 			info = "player loses!!! --> dealer hits 21"
-# 		elif sum(dealer_cards) > 21:
-# 			r = 1
-# 			terminal = True
-# 			info = 'player wins!!! --> dealer busts'
-# 		elif sum(player_cards) == 21:
-# 			r = 1
-# 			terminal = True
-# 			info = "player wins!!! --> player hits 21"
-# 		elif sum(player_cards) > 21:
-# 			r = -1
-# 			terminal = True
-# 			info = "player loses!!! --> player busts"
-# 		else:
-# 			r = 0
-# 			terminal = False
-# 			info = ""
-
-# 		return r, terminal, info
-
-# 	r = 0
-# 	terminal = False
-# 	info = ""
-
-# 	dealer_cards, player_cards = init()
-
-# 	if sum(player_cards) == 12:
-
-# 	r, terminal, info = evalute_result(player_cards, dealer_cards)
-
-# 	print "=============== Game ==============="
-	
-# 	while not terminal:
-# 		# play a round
-# 		dec = policyP(player_cards)
-# 		if dec == 1:
-# 			player_cards.append(deal())
-# 		else:
-# 			dealer_cards.append(deal())
-
-# 		player_dec = policyP(player_cards)
-# 		dealer_dec = policyD(dealer_cards)
-
-# 		# decision for current round
-# 		if player_dec == 0 and dealer_dec == 0: # player and dealer stick
-# 			if sum(player_cards) > sum(dealer_cards):
-# 				r = 1
-# 				terminal = True
-# 				info = "player wins!!! --> player larger than dealer"
-# 			elif sum(player_cards) == sum(dealer_cards):
-# 				r = 0
-# 				terminal = True
-# 				info = "player ties!!! --> player ties with dealer"
-# 			elif sum(player_cards) < sum(dealer_cards):
-# 				r = -1
-# 				terminal = True
-# 				info = "player loses!!! --> player smaller than dealer"
-
-# 		if player_dec == 0 and dealer_dec == 1: # player sticks and dealer hits
-# 			dealer_cards.append(deal())
-
-# 		if player_dec == 1 and dealer_dec == 0: # player hits and dealer sticks
-# 			player_cards.append(deal())
-
-# 		if player_dec == 1 and dealer_dec == 1: # player hits and dealer hits
-# 			player_cards.append(deal())
-
-# 		r, terminal, info = evalute_result(player_cards, dealer_cards)
-
-# 	print "dealer's cards: "
-# 	print dealer_cards
-# 	print "player's cards:"
-# 	print player_cards
-# 	print info
-
-# 	# return result
-
-# def policyD(dealer_cards):
-# 	dealer_current_sum = sum(dealer_cards)
-# 	if dealer_current_sum >= 17:
-# 		decision = 0 # stick
-# 	else:
-# 		decision = 1 # hit
-# 	return decision
-
-# def policyP(player_cards):
-# 	player_current_sum = sum(player_cards)
-# 	if player_current_sum == 20 or player_current_sum == 21:
-# 		decision = 0 # stick
-# 	else:
-# 		decision = 1 # hit
-# 	return decision
+from mpl_toolkits.mplot3d import axes3d
+import matplotlib.pyplot as plt
 
 def game():
 	# new definition of a game
@@ -138,6 +15,7 @@ def game():
 
 	player_cards = []
 	dealer_cards = []
+	usable_ace = False # mark if there is a usable ace in player's card
 
 	# 1) first deal two cards to both player and dealer
 	player_cards.append(deal())
@@ -162,20 +40,22 @@ def game():
 	#	if player does not get natural and dealer gets natural
 	#		player loses
 	#		game over
-	if 1 in player_cards and sum(player_cards) >= 11:
-		if 1 in dealer_cards and sum(dealer_cards) >= 11:
+	if 1 in player_cards and sum(player_cards) == 11:
+		if 1 in dealer_cards and sum(dealer_cards) == 11:
 			r = 0
 			info = "Both player and dealer get natural, ties!"
-			return r, info, player_cards, dealer_cards
+			usable_ace = True
+			return r, info, player_cards, dealer_cards, usable_ace
 		else:
 			r = 1
 			info = "Player gets natural, player wins!"
-			return r, info, player_cards, dealer_cards
+			usable_ace = True
+			return r, info, player_cards, dealer_cards, usable_ace
 	else:
-		if 1 in dealer_cards and sum(dealer_cards) >= 11:
+		if 1 in dealer_cards and sum(dealer_cards) == 11:
 			r = -1
 			info = "Dealer get natural, player loses!"
-			return r, info, player_cards, dealer_cards
+			return r, info, player_cards, dealer_cards, usable_ace
 
 	# 3) player's turn ~ player's policy
 	#		if player sticks
@@ -210,13 +90,14 @@ def game():
 			# usable ace
 			if new_card == 1 and sum(player_cards) + 11 <= 21:
 				player_cards.append(11)
+				usable_ace = True
 			else:
 				player_cards.append(new_card)
 
 			if sum(player_cards) > 21:
 				r = -1
 				info = "Player busts, player loses"
-				return r, info, player_cards, dealer_cards
+				return r, info, player_cards, dealer_cards, usable_ace
 
 
 	# 4) dealer's turn ~ dealer's policy
@@ -259,7 +140,7 @@ def game():
 			if sum(dealer_cards) > 21:
 				r = 1
 				info = "Dealer busts, player wins"
-				return r, info, player_cards, dealer_cards
+				return r, info, player_cards, dealer_cards, usable_ace
 
 	# 5) both player and dealer stick, check result
 	if sum(player_cards) > sum(dealer_cards):
@@ -272,13 +153,71 @@ def game():
 		r = -1
 		info = "Player's cards < dealer's cards, player loses"
 
-	return r, info, player_cards, dealer_cards
+	return r, info, player_cards, dealer_cards, usable_ace
 
-# simulation
-N = 10
+def v_update(r, player_cards, dealer_cards, v):
+	dealer_show = dealer_cards[1]
+	num_player_cards = len(player_cards)
+	for i in range(1,num_player_cards):
+		player_sum = sum(player_cards[:i+1])
+		if player_sum >= 12 and player_sum <= 21:
+			# import ipdb;ipdb.set_trace()
+			# print dealer_show
+			# print player_sum
+			v[dealer_show-1,player_sum-12] += r
+	return v
+
+# init state-value estimate
+V_Usable = np.zeros((10,10)) # dealer_show X player_sum
+V_noUsable = np.zeros((10,10))
+# MC simulation
+N = 10000
+N_Usable = 0
+N_noUsable = 0
+
 for i in range(N):
 	print "========== Game " + str(i) + " =========="
-	r, info, player_cards, dealer_cards = game()
+	r, info, player_cards, dealer_cards, usable_ace = game()
+	if usable_ace == True:
+		V_Usable = v_update(r, player_cards, dealer_cards, V_Usable)
+		N_Usable += 1
+	else:
+		V_noUsable = v_update(r, player_cards, dealer_cards, V_noUsable)
+		N_noUsable += 1
 	print player_cards
 	print dealer_cards
 	print info
+
+V_Usable = 1. * V_Usable/N_Usable
+V_noUsable = 1. * V_noUsable/N_noUsable
+
+x = np.linspace(1,10,10)
+y = np.linspace(12,21,10)
+X,Y = np.meshgrid(x,y)
+
+# plot results
+fig = plt.figure()
+ax = fig.add_subplot(2,1,1, projection='3d')
+ax.plot_wireframe(X, Y, V_Usable, rstride=1, cstride=1)
+ax.set_zlim(-1,1)
+ax.set_zticks([-1,1])
+ax.tick_params(axis='x',labelsize=7)
+ax.tick_params(axis='y',labelsize=7)
+ax.set_title('Usable ace')
+
+ax = fig.add_subplot(2,1,2, projection='3d')
+ax.plot_wireframe(X, Y, V_noUsable, rstride=1, cstride=1)
+ax.set_zlim(-1,1)
+ax.set_zticks([-1,1])
+ax.tick_params(axis='x',labelsize=7)
+ax.tick_params(axis='y',labelsize=7)
+ax.set_title('No usable ace')
+ax.set_xlabel('Dealer showing')
+ax.set_ylabel('Player sum')
+
+
+fig = plt.gcf()
+fig.set_size_inches(4,8)
+plt.tight_layout()
+out_path = 'MCES_blackjack_itr_' + str(N) + '.png' 
+plt.savefig(out_path,dpi=180)
