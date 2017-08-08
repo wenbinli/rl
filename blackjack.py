@@ -129,10 +129,32 @@ def policyP(player_cards):
 
 def game():
 	# new definition of a game
-	# first two cards to both player and dealer
-	# decide if game stops here
-	# if game stops, who wins
-	# if game does not stop, continue
+	# 1) first deal two cards to both player and dealer
+	# 2) decide if game stops here:
+	# 		if game stops
+	#			decide winner
+	#			game over
+	#		else
+	# 			continue to 3) player's turn
+	# 3) player's turn
+	#		if player sticks
+	#			then go to dealer's turn
+	#		if player hits
+	#			if player busts
+	#				player loses
+	#				game over
+	#			else
+	#				continue to 3)
+	# 4) dealer's turn
+	#		if dealer sticks
+	#			decide winner
+	#			game over
+	#		if dealer hits
+	#			if dealer busts
+	#				dealer loses
+	#				game over
+	#			else
+	#				continue to 4)
 
 # simulation
 N = 10
