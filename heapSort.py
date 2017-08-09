@@ -48,7 +48,14 @@ def maxHeapify(data,idx):
         data[idx], data[largest] = data[largest], data[idx]
 
         maxHeapify(data, largest)
-        
+
+    return data
+
+def buildHeap(data):
+    n = len(data)
+    for i in range(n/2,-1,-1)
+
+
     return data
 
 data = [4,10,3,5,1]
