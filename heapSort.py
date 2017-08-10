@@ -46,7 +46,7 @@ def maxHeapify(data,n,idx):
     if largest != idx:
         data[idx], data[largest] = data[largest], data[idx]
 
-        maxHeapify(data,largest,n)
+        maxHeapify(data,n,largest)
 
 def buildHeap(data):
     n = len(data)
