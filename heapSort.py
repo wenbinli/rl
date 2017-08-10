@@ -32,11 +32,10 @@
 #     return data
 
 # Version 2
-def maxHeapify(data,idx):
+def maxHeapify(data,n,idx):
     largest = idx
     l = 2 * idx + 1
     r = 2 * idx + 2
-    n = len(data)
 
     if l < n and data[largest] < data[l]:
         largest = l
@@ -47,17 +46,23 @@ def maxHeapify(data,idx):
     if largest != idx:
         data[idx], data[largest] = data[largest], data[idx]
 
-        maxHeapify(data, largest)
-
-    return data
+        maxHeapify(data,largest,n)
 
 def buildHeap(data):
     n = len(data)
-    for i in range(n/2,-1,-1)
+    for i in range(n/2-1,-1,-1):
+        maxHeapify(data,n,i)
 
+def heapSort(data):
+    buildHeap(data)
+    n = len(data)
 
-    return data
-
-data = [4,10,3,5,1]
-data_sort = maxHeapify(data,0)
-print data_sort
+    for i in range(n-1,0,-1):
+        # print i
+        data[i], data[0] = data[0], data[i]
+        maxHeapify(data,i,0)
+        # print data
+    
+data = [12, 11, 13, 5, 6, 7]
+heapSort(data)
+print data
